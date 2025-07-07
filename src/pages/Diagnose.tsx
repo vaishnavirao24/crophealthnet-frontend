@@ -22,22 +22,29 @@ const Diagnose: React.FC = () => {
 
     try {
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append("file", file);  // Match backend key
 
-      // Simulate API call with mock data for demonstration
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Mock response - replace with actual API call
-      const mockResult: DiagnosisResult = {
-        prediction: Math.random() > 0.5 ? 'Healthy Plant' : 'Leaf Blight',
-        confidence: 0.85 + Math.random() * 0.15,
-        heatmap_url: 'https://images.pexels.com/photos/1459505/pexels-photo-1459505.jpeg?auto=compress&cs=tinysrgb&w=400'
+      const response = await fetch("https://srv-d1ko4795pdvs73b42csg.onrender.com/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Server error");
+      }
+
+      const data = await response.json();
+
+      const actualResult: DiagnosisResult = {
+        prediction: data.prediction,
+        confidence: data.confidence,
+        heatmap_url: data.heatmap_url,
       };
 
-      setResult(mockResult);
+      setResult(actualResult);
     } catch (err) {
-      setError('Failed to analyze image. Please try again.');
-      console.error('Upload error:', err);
+      setError("Failed to analyze image. Please try again.");
+      console.error("Upload error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +52,7 @@ const Diagnose: React.FC = () => {
 
   const handleFeedback = (feedback: { correct: boolean; comment?: string }) => {
     console.log('Feedback received:', feedback);
-    // In a real app, this would send feedback to the server
+    // You can optionally send this to the backend later
   };
 
   return (
@@ -64,10 +71,10 @@ const Diagnose: React.FC = () => {
           {/* Upload Form */}
           <UploadForm onUpload={handleUpload} isLoading={isLoading} />
 
-          {/* Loading State */}
+          {/* Loading Spinner */}
           {isLoading && <LoadingSpinner />}
 
-          {/* Error State */}
+          {/* Error Message */}
           {error && (
             <div className="bg-red-50 rounded-2xl p-6 border border-red-200">
               <div className="text-center">
@@ -77,7 +84,7 @@ const Diagnose: React.FC = () => {
             </div>
           )}
 
-          {/* Results */}
+          {/* Results and Feedback */}
           {result && (
             <>
               <ResultCard 
