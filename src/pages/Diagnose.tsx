@@ -22,14 +22,15 @@ const Diagnose: React.FC = () => {
 
     // Dummy disease predictions list
     const dummyResults: DiagnosisResult[] = [
-      { prediction: "Tomato Early Blight", confidence: 91 },
-      { prediction: "Tomato Late Blight", confidence: 87 },
-      { prediction: "Leaf Mold", confidence: 89 },
-      { prediction: "Bacterial Spot", confidence: 83 },
-      { prediction: "Healthy Leaf", confidence: 97 },
-      { prediction: "Septoria Leaf Spot", confidence: 85 },
-      { prediction: "Powdery Mildew", confidence: 90 }
-    ];
+  { prediction: "Tomato Early Blight", confidence: 0.91 },
+  { prediction: "Tomato Late Blight", confidence: 0.87 },
+  { prediction: "Leaf Mold", confidence: 0.89 },
+  { prediction: "Bacterial Spot", confidence: 0.83 },
+  { prediction: "Healthy Leaf", confidence: 0.97 },
+  { prediction: "Septoria Leaf Spot", confidence: 0.85 },
+  { prediction: "Powdery Mildew", confidence: 0.90 }
+];
+
 
     // Select random disease result
     const randomResult = dummyResults[Math.floor(Math.random() * dummyResults.length)];
